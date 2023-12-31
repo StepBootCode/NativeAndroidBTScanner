@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="com._1c.g5.v8.dt.launching.mobile.MobileApplication">
+    <stringAttribute key="com._1c.g5.v8.dt.debug.core.ATTR_APPLICATION_ID" value="cfa3a74d-23fa-4478-877a-d04429470101"/>
+    <booleanAttribute key="com._1c.g5.v8.dt.debug.core.ATTR_APPLICATION_USE_DEFAULT" value="false"/>
+    <stringAttribute key="com._1c.g5.v8.dt.debug.core.ATTR_PROJECT_NAME" value="Conf"/>
+    <booleanAttribute key="com._1c.g5.v8.dt.debug.core.ATTR_RUNTIME_INSTALLATION_USE_AUTO" value="true"/>
+    <stringAttribute key="com._1c.g5.v8.dt.launching.mobile.ATTR_MOBILE_DEVICE_NAME" value="doogee-x5pro-0123456789ABCDEF"/>
+    <stringAttribute key="com._1c.g5.v8.dt.launching.mobile.ATTR_MOBILE_OS" value="com._1c.g5.v8.dt.platform.services.mobile.mobileOs.Android"/>
+    <stringAttribute key="com._1c.g5.v8.dt.launching.mobile.ATTR_MOBILE_PLATFORM" value="com._1c.g5.v8.dt.platform.services.core.resolvableInstallations.fixed:com._1c.g5.v8.dt.platform.services.mobile.runtimeType.MobilePlatform=8.3.22.57=Undefined"/>
+    <booleanAttribute key="com._1c.g5.v8.dt.launching.mobile.ATTR_MOBILE_PLATFORM_REINSTALL" value="true"/>
+    <stringAttribute key="org.eclipse.debug.ui.ATTR_CONSOLE_ENCODING" value="IBM866"/>
+    <stringAttribute key="process_factory_id" value="com._1c.g5.v8.dt.debug.core.RunimeProcessFactory"/>
+</launchConfiguration>
