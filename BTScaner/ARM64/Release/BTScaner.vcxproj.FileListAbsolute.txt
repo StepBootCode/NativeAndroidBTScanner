@@ -1,1 +1,0 @@
-D:\Projects\AddIn1C\BTScaner\BTScaner\ARM64\Release\BTScaner_ARM64.so

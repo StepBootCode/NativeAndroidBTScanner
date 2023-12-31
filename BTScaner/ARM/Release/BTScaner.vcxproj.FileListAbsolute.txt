@@ -1,1 +1,0 @@
-D:\Projects\AddIn1C\BTScaner\BTScaner\ARM\Release\BTScaner_ARM.so
