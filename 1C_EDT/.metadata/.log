@@ -301,3 +301,33 @@ Caused by: java.lang.InterruptedException
 
 !ENTRY com._1c.g5.v8.dt.platform.services.core 1 0 2023-12-31 15:30:37.319
 !MESSAGE ConfigDumpInfo.xml is stored for "Conf"
+
+!ENTRY com._1c.g5.v8.dt.ui 1 0 2023-12-31 15:42:15.132
+!MESSAGE EDT закрывается
+
+!ENTRY com._1c.g5.v8.dt.ui 1 0 2023-12-31 15:42:15.132
+!MESSAGE Существующий проект (на закрытии): Conf, открыт: true
+
+!ENTRY org.eclipse.e4.ui.workbench.swt 1 0 2023-12-31 15:42:15.346
+!MESSAGE Saving dialog settings
+
+!ENTRY com._1c.g5.v8.dt.core 1 0 2023-12-31 15:42:15.517
+!MESSAGE Project context is being stopped: Conf (IDE_SHUTDOWN)
+
+!ENTRY com._1c.g5.v8.dt.platform.services.core 1 0 2023-12-31 15:42:15.642
+!MESSAGE SSH connecton with infobase InfoBase released
+
+!ENTRY com._1c.g5.v8.dt.platform.services.core 1 0 2023-12-31 15:42:15.643
+!MESSAGE Project "Conf" is disconnected from infobase "InfoBase"
+
+!ENTRY com._1c.g5.v8.dt.platform.services.core 1 0 2023-12-31 15:42:15.643
+!MESSAGE Synchronization data store is closed: D:\Projects\AddIn1C\BTScaner\1C_EDT\.metadata\.plugins\org.eclipse.core.resources\.projects\Conf\com._1c.g5.v8.dt.platform.services.core\.default\infobase-synchronization\cfa3a74d-23fa-4478-877a-d04429470101\SynchronizationData.store
+
+!ENTRY com._1c.g5.v8.dt.platform.services.core 1 0 2023-12-31 15:42:15.643
+!MESSAGE Infobase syncrhonization tracking BM model Conf stopped
+
+!ENTRY com._1c.g5.v8.dt.core 1 0 2023-12-31 15:42:15.653
+!MESSAGE Project context is stopped: Conf
+
+!ENTRY com._1c.g5.v8.dt.platform.services.core 1 0 2023-12-31 15:42:17.859
+!MESSAGE All known SSH connectons released
