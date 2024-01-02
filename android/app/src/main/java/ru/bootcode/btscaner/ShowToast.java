@@ -5,7 +5,6 @@ import android.widget.Toast;
 
 public class ShowToast  implements Runnable
 {
-
     Activity mContext;
     String message;
 

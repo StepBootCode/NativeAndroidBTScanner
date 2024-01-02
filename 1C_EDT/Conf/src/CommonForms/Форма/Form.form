@@ -30,19 +30,19 @@
     <type>UsualButton</type>
     <commandName>Form.Command.Подключить</commandName>
     <representation>Auto</representation>
+    <defaultButton>true</defaultButton>
     <autoMaxWidth>true</autoMaxWidth>
     <autoMaxHeight>true</autoMaxHeight>
     <horizontalStretch>true</horizontalStretch>
     <placementArea>UserCmds</placementArea>
+    <borderColor xsi:type="core:ColorRef">
+      <color>Style.FormTextColor</color>
+    </borderColor>
     <representationInContextMenu>Auto</representationInContextMenu>
   </items>
   <items xsi:type="form:Decoration">
     <name>ДекорацияИнформация</name>
     <id>3</id>
-    <title>
-      <key>ru</key>
-      <value>ДекорацияИнформация</value>
-    </title>
     <visible>true</visible>
     <enabled>true</enabled>
     <userVisible>
@@ -76,6 +76,9 @@
     <type>Label</type>
     <autoMaxWidth>true</autoMaxWidth>
     <autoMaxHeight>true</autoMaxHeight>
+    <textColor xsi:type="core:ColorRef">
+      <color>Style.FormTextColor</color>
+    </textColor>
     <font xsi:type="core:FontRef">
       <font>Style.SmallTextFont</font>
       <bold>true</bold>
@@ -90,6 +93,10 @@
   <items xsi:type="form:FormField">
     <name>Устройство</name>
     <id>6</id>
+    <title>
+      <key>ru</key>
+      <value>Сканер</value>
+    </title>
     <visible>true</visible>
     <enabled>true</enabled>
     <userVisible>
@@ -141,7 +148,7 @@
       <autoMaxWidth>true</autoMaxWidth>
       <autoMaxHeight>true</autoMaxHeight>
       <wrap>true</wrap>
-      <dropListButton>false</dropListButton>
+      <dropListButton>true</dropListButton>
       <choiceButton>true</choiceButton>
       <clearButton>false</clearButton>
       <spinButton>false</spinButton>
@@ -151,6 +158,9 @@
       <chooseType>true</chooseType>
       <typeDomainEnabled>true</typeDomainEnabled>
       <textEdit>true</textEdit>
+      <borderColor xsi:type="core:ColorRef">
+        <color>Style.FormTextColor</color>
+      </borderColor>
     </extInfo>
   </items>
   <items xsi:type="form:Button">
@@ -181,7 +191,11 @@
     <representation>Auto</representation>
     <autoMaxWidth>true</autoMaxWidth>
     <autoMaxHeight>true</autoMaxHeight>
+    <horizontalStretch>true</horizontalStretch>
     <placementArea>UserCmds</placementArea>
+    <borderColor xsi:type="core:ColorRef">
+      <color>Style.FormTextColor</color>
+    </borderColor>
     <representationInContextMenu>Auto</representationInContextMenu>
   </items>
   <items xsi:type="form:Button">
@@ -212,7 +226,11 @@
     <representation>Auto</representation>
     <autoMaxWidth>true</autoMaxWidth>
     <autoMaxHeight>true</autoMaxHeight>
+    <horizontalStretch>true</horizontalStretch>
     <placementArea>UserCmds</placementArea>
+    <borderColor xsi:type="core:ColorRef">
+      <color>Style.FormTextColor</color>
+    </borderColor>
     <representationInContextMenu>Auto</representationInContextMenu>
   </items>
   <items xsi:type="form:Button">
@@ -243,7 +261,11 @@
     <representation>Auto</representation>
     <autoMaxWidth>true</autoMaxWidth>
     <autoMaxHeight>true</autoMaxHeight>
+    <horizontalStretch>true</horizontalStretch>
     <placementArea>UserCmds</placementArea>
+    <borderColor xsi:type="core:ColorRef">
+      <color>Style.FormTextColor</color>
+    </borderColor>
     <representationInContextMenu>Auto</representationInContextMenu>
   </items>
   <items xsi:type="form:FormGroup">
@@ -252,6 +274,9 @@
     <items xsi:type="form:FormField">
       <name>РезультатыСканирования</name>
       <id>13</id>
+      <titleTextColor xsi:type="core:ColorRef">
+        <color>Style.FormTextColor</color>
+      </titleTextColor>
       <titleFont xsi:type="core:FontRef">
         <font>Style.SmallTextFont</font>
         <bold>true</bold>

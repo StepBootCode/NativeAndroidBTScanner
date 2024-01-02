@@ -16,6 +16,7 @@ public class BTScaner implements Runnable {
     private final UUID SPP_SERVICE_ID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
     static native void OnBarcode(long pObject, String sBarcode);
+    static native void OnCancel(long pObject);
 
     private long m_V8Object;            // 1C application context (Object from C++)
     private Activity m_Activity;        // Custom activity of 1C:Enterprise
@@ -32,6 +33,7 @@ public class BTScaner implements Runnable {
     public BTScaner(Activity m_Activity, long m_V8Object) {
         this.m_V8Object = m_V8Object;
         this.m_Activity = m_Activity;
+
     }
 
     public void run() {
@@ -82,7 +84,6 @@ public class BTScaner implements Runnable {
             }
         }
 
-        //ParcelUuid[] uuids = (ParcelUuid[]) device.getUuids();
         try {
             btSocket = device.createRfcommSocketToServiceRecord(SPP_SERVICE_ID);
         } catch (IOException e) {
@@ -157,7 +158,6 @@ public class BTScaner implements Runnable {
             inputThread.interrupt();
             inputThread = null;
         }
-
         if (inStream != null) {
             try {
                 inStream.close();
@@ -175,17 +175,17 @@ public class BTScaner implements Runnable {
     private class InputThread extends Thread {
 
         public void run() {
-            byte[] buffer = new byte[1024];  // buffer store for the stream
-            int bytes; // bytes returned from read()
-            // Прослушиваем InputStream пока не произойдет исключение
+            byte[] buffer = new byte[1024];
+            int bytes;
+
             while (true) {
                 try {
-                    // Read from the InputStream
-                    bytes = inStream.read(buffer);        // Получаем кол-во байт и само собщение в байтовый массив "buffer"
-                    // преобразуем их в строку
+                    bytes = inStream.read(buffer);
                     String strIncom = new String(buffer, 0, bytes, StandardCharsets.US_ASCII);
                     OnBarcode(m_V8Object, strIncom);
                 } catch (IOException e) {
+
+                    OnCancel(m_V8Object);
                     cancel();
                     break;
                 }

@@ -1,5 +1,6 @@
-WORKSPACE_NAME=BarcodeScaner
-eclipse.preferences.version=1
-platformState=1699109788079
+#Tue Jan 02 10:35:28 MSK 2024
 quickStart=false
+WORKSPACE_NAME=BarcodeScaner
+platformState=1699109788079
 tipsAndTricks=true
+eclipse.preferences.version=1

@@ -5,10 +5,13 @@
 #include "AddInNative.h"
 
 static const wchar_t g_EventSource[] = L"ru.bootcode.btscaner";
-static const wchar_t g_EventName[] = L"barcode";
-static WcharWrapper s_EventName(g_EventName);
 static WcharWrapper s_EventSource(g_EventSource);
 
+static const wchar_t g_EventBarCode[] = L"barcode";
+static WcharWrapper s_EventBarCode(g_EventBarCode);
+
+static const wchar_t g_EventCancel[] = L"cancel";
+static WcharWrapper s_EventCancel(g_EventCancel);
 extern "C"
 JNIEXPORT void JNICALL
 Java_ru_bootcode_btscaner_BTScaner_OnBarcode(JNIEnv *env, jclass clazz, jlong p_object, jstring s_barcode) {
@@ -20,11 +23,24 @@ Java_ru_bootcode_btscaner_BTScaner_OnBarcode(JNIEnv *env, jclass clazz, jlong p_
 	//Def: IAddInDefBaseEx* pAddIn = (IAddInDefBaseEx*)p_object;
 	BTScaner* scaner = (BTScaner*)p_object;
 
-	WCHAR_T* wcBarcode = nullptr;
-	jstring2v8string(env, scaner->m_iMemory, s_barcode, &wcBarcode);
+	if (scaner != nullptr) {
+		WCHAR_T* wcBarcode = nullptr;
+		jstring2v8string(env, scaner->m_iMemory, s_barcode, &wcBarcode);
 
-    scaner->m_iConnect->ExternalEvent(s_EventSource, s_EventName, wcBarcode); 
+		scaner->m_iConnect->ExternalEvent(s_EventSource, s_EventBarCode, wcBarcode);
+	}
 }
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_ru_bootcode_btscaner_BTScaner_OnCancel(JNIEnv *env, jclass clazz,
+															 jlong p_object) {
+	BTScaner* scaner = (BTScaner*)p_object;
+
+	if (scaner != nullptr)
+		scaner->m_iConnect->ExternalEvent(s_EventSource, s_EventCancel, nullptr);
+}
+
 
 BTScaner::BTScaner() : cc(nullptr), obj(nullptr)
 {

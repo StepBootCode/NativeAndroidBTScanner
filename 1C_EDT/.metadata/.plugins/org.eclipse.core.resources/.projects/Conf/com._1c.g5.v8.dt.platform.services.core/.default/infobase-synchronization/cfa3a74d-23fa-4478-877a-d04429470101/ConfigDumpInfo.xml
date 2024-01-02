@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ConfigDumpInfo xmlns="http://v8.1c.ru/8.3/xcf/dumpinfo" xmlns:xen="http://v8.1c.ru/8.3/xcf/enums" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" format="Hierarchical" version="2.15">
 	<ConfigVersions>
-		<Metadata name="CommonForm.Форма" id="b39d1bc0-dfde-4769-9983-45a3582afa56" configVersion="583b1c20eb03d74c9fa47d5ce2ca983300000000"/>
-		<Metadata name="CommonForm.Форма.Form" id="b39d1bc0-dfde-4769-9983-45a3582afa56.0" configVersion="6b9781d251f6fe4c895231a144899b9200000000"/>
-		<Metadata name="CommonTemplate.BarcodeScanner" id="c95e26aa-8e67-4809-9550-a690c3f4b9ad" configVersion="9c1173f453a36d4487b9a2542c078e2000000000"/>
-		<Metadata name="CommonTemplate.BarcodeScanner.Template" id="c95e26aa-8e67-4809-9550-a690c3f4b9ad.0" configVersion="9144ca40976d4d43b53416cff96054ce00000000"/>
-		<Metadata name="Configuration.Conf" id="ea3f3890-8fd6-4bdb-b322-e8dfb3f430f6" configVersion="c87042979a4847418232308df530cb8600000000"/>
-		<Metadata name="Configuration.Conf.CommandInterface" id="47021d75-28f8-4c70-8731-97ac8312e7d5.a" configVersion="2e67c18740dd6e458551a85c4a7972c600000000"/>
-		<Metadata name="Configuration.Conf.HomePageWorkArea" id="47021d75-28f8-4c70-8731-97ac8312e7d5.8" configVersion="2fd075b58def0a439cc2571d59a674e900000000"/>
-		<Metadata name="Configuration.Conf.MainSectionCommandInterface" id="47021d75-28f8-4c70-8731-97ac8312e7d5.9" configVersion="d01e1fdbe269204cb22603e01794104e00000000"/>
-		<Metadata name="Configuration.Conf.ManagedApplicationModule" id="47021d75-28f8-4c70-8731-97ac8312e7d5.6" configVersion="d5d9afe5e525134d805b7f5eaad26ac100000000"/>
-		<Metadata name="Language.Русский" id="a66fbadd-6ba5-4a0a-87f9-89a10cca10b8" configVersion="965b0608ed1ed14799e3ba26a38ea2ac00000000"/>
+		<Metadata name="CommonForm.Форма" id="b39d1bc0-dfde-4769-9983-45a3582afa56" configVersion="3701f4aeb8086b408731ec3c58b95a2700000000"/>
+		<Metadata name="CommonForm.Форма.Form" id="b39d1bc0-dfde-4769-9983-45a3582afa56.0" configVersion="6050bba82d84a54ea086f103ef9a392400000000"/>
+		<Metadata name="CommonTemplate.BarcodeScanner" id="c95e26aa-8e67-4809-9550-a690c3f4b9ad" configVersion="7e1e9ec085b2c049b11e1e8f4f4b227000000000"/>
+		<Metadata name="CommonTemplate.BarcodeScanner.Template" id="c95e26aa-8e67-4809-9550-a690c3f4b9ad.0" configVersion="8721466ef7853344873ae54817feb7ee00000000"/>
+		<Metadata name="Configuration.Conf" id="ea3f3890-8fd6-4bdb-b322-e8dfb3f430f6" configVersion="9301d884cfe17c459e09a2ffe6c3834100000000"/>
+		<Metadata name="Configuration.Conf.CommandInterface" id="47021d75-28f8-4c70-8731-97ac8312e7d5.a" configVersion="741b9593b9a40f4b9d4b91c65d4967eb00000000"/>
+		<Metadata name="Configuration.Conf.HomePageWorkArea" id="47021d75-28f8-4c70-8731-97ac8312e7d5.8" configVersion="dd484b9da4f96c488479f0a2a28b208c00000000"/>
+		<Metadata name="Configuration.Conf.MainSectionCommandInterface" id="47021d75-28f8-4c70-8731-97ac8312e7d5.9" configVersion="cc067e1afd83fb4e9e4b8af4d23ad3c800000000"/>
+		<Metadata name="Configuration.Conf.ManagedApplicationModule" id="47021d75-28f8-4c70-8731-97ac8312e7d5.6" configVersion="5268216e84759b43b123bd36159e2c5300000000"/>
+		<Metadata name="Language.Русский" id="a66fbadd-6ba5-4a0a-87f9-89a10cca10b8" configVersion="693e76890ace9c4f8b95fdcae517498400000000"/>
 	</ConfigVersions>
 </ConfigDumpInfo>
