@@ -6,3 +6,6 @@
 /BTScaner/x86/
 /android/app/build/
 /android/app/.cxx/
+*.so
+*.apk
+/Release/output.zip
