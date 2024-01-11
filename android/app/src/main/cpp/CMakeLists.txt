@@ -13,10 +13,10 @@ cmake_minimum_required(VERSION 3.4.1)
 add_library( # Sets the name of the library.
             ru_bootcode_btscaner
 
-             # Sets the library as a shared library.
-             SHARED
+             # Sets the library as a shared library.SHARED
+        STATIC
 
-             # Provides a relative path to your source file(s).
+        # Provides a relative path to your source file(s).
             native-lib.cpp
             ../../../../../BTScaner/AddInNative.cpp
             ../../../../../jni/jnienv.cpp
