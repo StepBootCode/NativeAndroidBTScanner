@@ -1,9 +1,12 @@
 package ru.bootcode.btscaner;
 
+import android.Manifest;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.pm.PackageManager;
+import android.os.Build;
 
 import java.io.InputStream;
 import java.io.IOException;
@@ -45,26 +48,45 @@ public class BTScaner implements Runnable {
     }
 
     public void initDevice(String btAdress) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+            if (m_Activity.checkSelfPermission(Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED)
+            {
+                m_Activity.requestPermissions(new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
+                return;
+            }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+            if (m_Activity.checkSelfPermission(Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_DENIED)
+            {
+                m_Activity.requestPermissions(new String[]{Manifest.permission.BLUETOOTH_SCAN}, 2);
+                return ;
+            }
         this.btAdress = btAdress;
 
         if (btAdapter == null)
             try {
                 btAdapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter();
             } catch (Exception e) {
+                ShowToast toast = new ShowToast(m_Activity, "Не удалось получить доступ к bluetooth адаптеру.");
+                toast.toast();
                 return;
             }
 
         if (btAdapter == null) {
-            return;
+            ShowToast toast = new ShowToast(m_Activity, "Отсутствует поддержка работы с bluetooth");
+            toast.toast();
         }
 
         if (!btAdapter.isEnabled()) {
+            ShowToast toast = new ShowToast(m_Activity, "Bluetooth выключен");
+            toast.toast();
             return;
         }
 
         device = btAdapter.getRemoteDevice(btAdress);
         if (device == null) {
+            ShowToast toast = new ShowToast(m_Activity, "Не удалось получить устройство по MAC адресу");
+            toast.toast();
             return;
         }
 
@@ -80,27 +102,37 @@ public class BTScaner implements Runnable {
         try {
             btSocket = device.createRfcommSocketToServiceRecord(SPP_SERVICE_ID);
         } catch (IOException e) {
-            return;
+            ShowToast toast = new ShowToast(m_Activity, "Ошибка создания подключения");
+            toast.toast();
         }
 
         if (btSocket == null) {
+            ShowToast toast = new ShowToast(m_Activity, "Ошибка создания подключения");
+            toast.toast();
+
             return;
         }
         btAdapter.cancelDiscovery();
 
         try {
             btSocket.connect();
+            ShowToast toast = new ShowToast(m_Activity,  "...Соединение установлено и готово к передачи данных...");
+            toast.toast();
         } catch (IOException e) {
             try {
                 btSocket.close();
             } catch (IOException e2) {
             }
+            ShowToast toast = new ShowToast(m_Activity,  "Ошибка установки соединения: "+ btAdress + e.getMessage());
+            toast.toast();
             return;
         }
 
         try {
             inStream = btSocket.getInputStream();
         } catch (IOException e) {
+            ShowToast toast = new ShowToast(m_Activity,  e.getMessage());
+            toast.toast();
             return;
         }
 
@@ -113,8 +145,14 @@ public class BTScaner implements Runnable {
     }
 
     public String getBluetoothDevicesList() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+            if (m_Activity.checkSelfPermission(Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED)
+            {
+                m_Activity.requestPermissions(new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
+                return "";
+            }
 
-        BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+        BluetoothAdapter btAdapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter();
         if (btAdapter == null) return "";
         if (!btAdapter.isEnabled()) return "";
 
@@ -124,7 +162,7 @@ public class BTScaner implements Runnable {
 
         StringBuilder TextOfDevice = new StringBuilder();
         for (BluetoothDevice device : pairedDevices) {
-            TextOfDevice.append(device.getAddress() + "|" + device.getName() + "\n");
+            TextOfDevice.append(device.getAddress()).append("|").append(device.getName()).append("\n");
         }
         return TextOfDevice.toString();
     }

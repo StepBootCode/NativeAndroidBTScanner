@@ -4,12 +4,12 @@ plugins {
 
 android {
     namespace 'ru.bootcode.btscaner'
-    compileSdk 30
+    compileSdk 33
 
     defaultConfig {
         applicationId "ru.bootcode.btscaner"
         minSdk 20
-        targetSdk 30
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 

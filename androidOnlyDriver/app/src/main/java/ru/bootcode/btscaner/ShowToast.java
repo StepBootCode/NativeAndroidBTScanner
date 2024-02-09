@@ -3,7 +3,7 @@ package ru.bootcode.btscaner;
 import android.app.Activity;
 import android.widget.Toast;
 
-public class ShowToast  implements Runnable
+public class ShowToast implements Runnable
 {
     Activity mContext;
     String message;

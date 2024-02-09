@@ -10,4 +10,4 @@
 /androidOnlyDriver/app/.cxx/
 *.so
 *.apk
-/Release/output.zip
+/Release/*.zip

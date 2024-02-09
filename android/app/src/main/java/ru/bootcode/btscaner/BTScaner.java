@@ -1,9 +1,12 @@
 package ru.bootcode.btscaner;
 
+import android.Manifest;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.pm.PackageManager;
+import android.os.Build;
 
 import java.io.InputStream;
 import java.io.IOException;
@@ -45,7 +48,19 @@ public class BTScaner implements Runnable {
     }
 
     public void initDevice(String btAdress) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+            if (m_Activity.checkSelfPermission(Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED)
+            {
+                m_Activity.requestPermissions(new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
+                return;
+            }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+            if (m_Activity.checkSelfPermission(Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_DENIED)
+            {
+                m_Activity.requestPermissions(new String[]{Manifest.permission.BLUETOOTH_SCAN}, 2);
+                return ;
+            }
         this.btAdress = btAdress;
 
         if (btAdapter == null)
@@ -130,6 +145,12 @@ public class BTScaner implements Runnable {
     }
 
     public String getBluetoothDevicesList() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+            if (m_Activity.checkSelfPermission(Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED)
+            {
+                m_Activity.requestPermissions(new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
+                return "";
+            }
 
         BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
         if (btAdapter == null) return "";
