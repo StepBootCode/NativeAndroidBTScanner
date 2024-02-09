@@ -6,6 +6,8 @@
 /BTScaner/x86/
 /android/app/build/
 /android/app/.cxx/
+/androidOnlyDriver/app/build/
+/androidOnlyDriver/app/.cxx/
 *.so
 *.apk
 /Release/output.zip

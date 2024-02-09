@@ -379,8 +379,6 @@ bool AddInNative::CallAsFunc(const long lMethodNum, tVariant* pvarRetValue, tVar
 		{
 			bool res = jvBTScaner.Enabled(pvarRetValue, paParams, lSizeArray);
 
-			JNIEnv* env = getJniEnv();
-
 			TV_VT(pvarRetValue) = VTYPE_BOOL;
 			pvarRetValue->bVal = res;
 

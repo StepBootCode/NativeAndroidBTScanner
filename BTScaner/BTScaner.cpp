@@ -133,6 +133,7 @@ bool BTScaner::Enabled(tVariant* pvarRetValue, tVariant* paParams, const long lS
 
 		return (bool)(res == JNI_TRUE);
 	}
+	return false;
 }
 
 jstring  BTScaner::GetBluetoothDevicesList(tVariant* pvarRetValue, tVariant* paParams, const long lSizeArray) const
@@ -142,9 +143,10 @@ jstring  BTScaner::GetBluetoothDevicesList(tVariant* pvarRetValue, tVariant* paP
 		JNIEnv* env = getJniEnv();
 		jmethodID methID = env->GetMethodID(cc, "getBluetoothDevicesList", "()Ljava/lang/String;");
 
-		jstring  res = (jstring)env->CallObjectMethod(obj, methID);
+		jstring res = (jstring)env->CallObjectMethod(obj, methID);
 		return res;
 	}
+	return (jstring)"";
 }
 
 void BTScaner::setCC(jclass _cc) {

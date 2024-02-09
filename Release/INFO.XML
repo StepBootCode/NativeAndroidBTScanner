@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<drivers>
+	<component progid="AddIn.BTScaner" type="BTСканерШтрихкода" name="Сканеры штрихкода bluetooth" version="1.0.0.0"/>
+</drivers>
