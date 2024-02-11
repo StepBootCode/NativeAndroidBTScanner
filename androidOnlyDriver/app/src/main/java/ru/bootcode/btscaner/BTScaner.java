@@ -167,6 +167,36 @@ public class BTScaner implements Runnable {
         return TextOfDevice.toString();
     }
 
+    public String getParameters() {
+
+        String defResult = "<Settings><Group Caption=\"Параметры подключения\"><Parameter Name=\"MACAddress\" Caption=\"MAC адрес\" TypeValue=\"String\" DefaultValue=\"\"><ChoiceList></ChoiceList></Parameter></Group></Settings>";
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+            if (m_Activity.checkSelfPermission(Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED)
+            {
+                m_Activity.requestPermissions(new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
+                return defResult;
+            }
+
+        BluetoothAdapter btAdapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter();
+        if (btAdapter == null) return defResult;
+        if (!btAdapter.isEnabled()) return defResult;
+
+        // Only bonded device!
+        Set<BluetoothDevice> pairedDevices = btAdapter.getBondedDevices();
+        if (pairedDevices.size() == 0)  return defResult;
+
+        StringBuilder TextOfDevice = new StringBuilder();
+        TextOfDevice.append("<Settings><Group Caption=\"Параметры подключения\"><Parameter Name=\"MACAddress\" Caption=\"MAC адрес\" TypeValue=\"String\" DefaultValue=\"\"><ChoiceList>");
+        for (BluetoothDevice device : pairedDevices) {
+            TextOfDevice.append("<Item Value=\""+device.getAddress()+"\">"+device.getName()+"</Item>");
+           // TextOfDevice.append(device.getAddress()).append("|").append(device.getName()).append("\n");
+        }
+        TextOfDevice.append("</ChoiceList></Parameter></Group></Settings>");
+
+        return TextOfDevice.toString();
+    }
+
     public boolean enabled()
     {
         return (btSocket != null && btSocket.isConnected() && inputThread != null && inputThread.isAlive());

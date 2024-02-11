@@ -13,6 +13,13 @@ private:
 	jclass cc;
 	jobject obj;
 
+	WCHAR_T* m_pwstrMACAddress;
+	WCHAR_T* m_pwstrDescription;
+	WCHAR_T* m_pwstrLastErrorDesc;
+	WCHAR_T* m_pwstrParameters;
+	WCHAR_T* m_pwstrDeviceId;
+	WCHAR_T* m_pwstrDeviceDesc;
+
 public:
 
 	BTScaner();
@@ -31,4 +38,13 @@ public:
 
 	bool Enabled(tVariant* pvarRetValue, tVariant* paParams, const long lSizeArray) const;
 	jstring GetBluetoothDevicesList(tVariant* pvarRetValue, tVariant* paParams, const long lSizeArray) const;
+
+	WCHAR_T* GetDescription();
+
+	uint32_t GetLastErrorCode();
+	WCHAR_T* GetLastErrorDesc();
+
+	WCHAR_T* GetParameters();
+	bool SetParameter(wchar_t* name, wchar_t* value);
+
 };

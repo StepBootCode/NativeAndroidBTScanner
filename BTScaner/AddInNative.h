@@ -16,6 +16,10 @@ public:
     enum Methods
     {
         eMethBluetoothDevicesList = 0,
+        eMethGetDescription,
+        eMethGetLastError,
+        eMethGetParameters,
+        eMethSetParameter,
         eMethEnabled,
 		eMethInitDevice,
 		eMethStopDevice,

@@ -19,6 +19,10 @@ static const wchar_t* g_PropNamesRu[] =
 static const wchar_t *g_MethodNames[] =
 {
 	L"GetBluetoothDevicesList",
+	L"GetDescription",
+	L"GetLastError",
+	L"GetParameters",
+	L"SetParameter",
 	L"Enabled",
 	L"InitDevice",
 	L"StopDevice"
@@ -27,6 +31,10 @@ static const wchar_t *g_MethodNames[] =
 static const wchar_t *g_MethodNamesRu[] =
 {
 	L"СписокУстройств",
+	L"ПолучитьОписание",
+	L"ПолучитьОшибку",
+	L"ПолучитьПараметры",
+	L"УстановитьПараметр",
 	L"Доступно",
 	L"ИнициализироватьУстройство",
 	L"ОстановитьУстройство"
@@ -84,7 +92,6 @@ bool AddInNative::Init(void* pConnection)
 	if (m_iConnect)
 	{
 		jvBTScaner.Initialize(m_iConnect);
-		return true;
 	}
 	return m_iConnect != nullptr;
 }
@@ -128,13 +135,11 @@ bool AddInNative::RegisterExtensionAs(WCHAR_T** wsExtensionName)
 	return false;
 }
 
-
 long AddInNative::GetNProps()
 {
 	// You may delete next lines and add your own implementation code here
 	return ePropLast;
 }
-
 
 long AddInNative::FindProp(const WCHAR_T* wsPropName)
 {
@@ -309,8 +314,12 @@ long AddInNative::GetNParams(const long lMethodNum)
 	switch (lMethodNum)
 	{
 	case eMethInitDevice:
+	case eMethGetDescription:
+	case eMethGetLastError:
+	case eMethGetParameters:
 		return 1;
-	
+	case eMethSetParameter:
+		return 2;
 	default:
 		return 0;
 	}
@@ -330,8 +339,11 @@ bool AddInNative::HasRetVal(const long lMethodNum)
 {
 	switch (lMethodNum)
 	{
+		case eMethGetDescription:
+		case eMethGetLastError:
+		case eMethGetParameters:
+		case eMethSetParameter:
 		case eMethBluetoothDevicesList:
-			return true;
 		case eMethEnabled:
 			return true;
 
@@ -379,12 +391,94 @@ bool AddInNative::CallAsFunc(const long lMethodNum, tVariant* pvarRetValue, tVar
 		{
 			bool res = jvBTScaner.Enabled(pvarRetValue, paParams, lSizeArray);
 
+			JNIEnv* env = getJniEnv();
+
 			TV_VT(pvarRetValue) = VTYPE_BOOL;
 			pvarRetValue->bVal = res;
 
 			return true;
 
 		}
+		case eMethGetDescription:
+			if (m_iMemory)
+			{
+				WCHAR_T* pwstrDesc = jvBTScaner.GetDescription();
+				uint32_t  iActualSize = getLenShortWcharStr(pwstrDesc) + 1;
+				tVariant& pParam0 = paParams[0];
+				if (m_iMemory->AllocMemory((void**)&pParam0.pwstrVal, iActualSize * sizeof(WCHAR_T)))
+				{
+					memcpy(pParam0.pwstrVal, pwstrDesc, iActualSize * sizeof(WCHAR_T));
+					pParam0.wstrLen = iActualSize - 1;
+					TV_VT(&pParam0) = VTYPE_PWSTR;
+				}
+			}
+
+			TV_VT(pvarRetValue) = VTYPE_BOOL;
+			TV_BOOL(pvarRetValue) = true;
+			return true;
+		case eMethGetLastError:
+			if (m_iMemory)
+			{
+				tVariant& pParam0 = paParams[0];
+
+				WCHAR_T* pwstrLastError = jvBTScaner.GetLastErrorDesc();
+				if (pwstrLastError)
+				{
+					uint32_t iActualSize = getLenShortWcharStr(pwstrLastError) + 1;
+					if (m_iMemory->AllocMemory((void**)&pParam0.pwstrVal, iActualSize * sizeof(WCHAR_T)))
+					{
+						memcpy(pParam0.pwstrVal, pwstrLastError, iActualSize * sizeof(WCHAR_T));
+						pParam0.wstrLen = iActualSize - 1;
+						TV_VT(&pParam0) = VTYPE_PWSTR;
+					}
+				}
+			}
+
+			TV_VT(pvarRetValue) = VTYPE_I4;
+			TV_I4(pvarRetValue) = jvBTScaner.GetLastErrorCode();
+			return true;
+		case eMethGetParameters:
+			if (m_iMemory)
+			{
+				tVariant& pParam0 = paParams[0];
+				WCHAR_T* pwstrParams = jvBTScaner.GetParameters();
+				uint32_t iActualSize = getLenShortWcharStr(pwstrParams) + 1;
+				if (m_iMemory->AllocMemory((void**)&pParam0.pwstrVal, iActualSize * sizeof(WCHAR_T)))
+				{
+					memcpy(pParam0.pwstrVal, pwstrParams, iActualSize * sizeof(WCHAR_T));
+					pParam0.wstrLen = iActualSize - 1;
+					TV_VT(&pParam0) = VTYPE_PWSTR;
+				}
+			}
+
+			TV_VT(pvarRetValue) = VTYPE_BOOL;
+			TV_BOOL(pvarRetValue) = true;
+			return true;
+		case eMethSetParameter:
+		{
+			wchar_t* pwstrParam0 = 0;
+			wchar_t* pwstrParam1 = 0;
+
+			tVariant& pParam0 = paParams[0];
+			if (pParam0.wstrLen > 0)
+				convFromShortWchar(&pwstrParam0, pParam0.pwstrVal);
+
+			tVariant& pParam1 = paParams[1];
+			if (pParam1.wstrLen > 0)
+				convFromShortWchar(&pwstrParam1, pParam1.pwstrVal);
+
+			jvBTScaner.SetParameter(pwstrParam0, pwstrParam1);
+
+			if (pwstrParam0)
+				delete pwstrParam0;
+			if (pwstrParam1)
+				delete pwstrParam1;
+
+			TV_VT(pvarRetValue) = VTYPE_BOOL;
+			TV_BOOL(pvarRetValue) = true;
+			return true;
+		}
+
 		default:
 			return false;
 	}

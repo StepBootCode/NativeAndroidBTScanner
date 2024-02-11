@@ -50,6 +50,36 @@ BTScaner::~BTScaner()
 {
 	if (obj)
 	{
+		JNIEnv* env = getJniEnv();
+		jmethodID methID = env->GetMethodID(cc, "getParameters", "()Ljava/lang/String;");
+
+		jstring res = (jstring)env->CallObjectMethod(obj, methID);
+		
+		m_pwstrParameters = 0;
+		if (res)
+		{
+			JNIEnv* env = getJniEnv();
+			int* lSize;
+			*lSize = env->GetStringLength(res);
+			const WCHAR_T* pjstr = env->GetStringChars(res, NULL);
+			m_iMemory->AllocMemory((void**)&m_pwstrDescription, (*lSize + 1) * sizeof(WCHAR_T));
+			for (auto i = 0; i < *lSize; ++i)
+				m_pwstrDescription[i] = pjstr[i];
+			m_pwstrDescription[*lSize] = 0;
+			env->ReleaseStringChars(res, pjstr);
+		}
+
+		wchar_t description[] =
+			L"<?xml version=\"1.0\" encoding=\"UTF-8\"?><DriverDescription Name=\"Bluetooth сканер штрихкода\" Description=\"Bluetooth сканер штрихкода\" EquipmentType=\"BTСканерШтрихкода\" IntegrationComponent=\"false\" MainDriverInstalled=\"false\" DriverVersion=\"1.0.0.0\" IntegrationComponentVersion=\"1.0\" DownloadURL=\"\" LogIsEnabled=\"false\" LogPath = \"\"/>";
+		m_pwstrDescription = 0;
+		convToShortWchar(&m_pwstrDescription, description);
+
+
+		//wchar_t parameters[] =
+		//	L"<Settings><Group Caption=\"Параметры подключения\"><Parameter Name=\"MACAddress\" Caption=\"MAC адрес\" TypeValue=\"String\" DefaultValue=\"\"><ChoiceList><Item Value=\"broadcast\">broadcast event</Item><Item Value=\"clipboard\">clipboard</Item></ChoiceList></Parameter></Group></Settings>";
+		//m_pwstrParameters = 0;
+		//convToShortWchar(&m_pwstrParameters, parameters);
+
 		StopDevice(); 
 
 		JNIEnv* env = getJniEnv();
@@ -105,7 +135,11 @@ void BTScaner::InitDevice(tVariant* paParams, IMemoryManager* iMemory)
 	{
 		JNIEnv* env = getJniEnv();
 
-		jstring jMAC = env->NewString(paParams[0].pwstrVal, paParams[0].wstrLen);
+		jstring jMAC = m_pwstrMACAddress != NULL ?
+			env->NewString(m_pwstrMACAddress, getLenShortWcharStr(m_pwstrMACAddress)) :
+			NULL;
+
+		//jstring jMAC = env->NewString(paParams[0].pwstrVal, paParams[0].wstrLen);
 
 		jmethodID methID = env->GetMethodID(cc, "initDevice", "(Ljava/lang/String;)V");
 		env->CallVoidMethod(obj, methID, jMAC);
@@ -133,7 +167,6 @@ bool BTScaner::Enabled(tVariant* pvarRetValue, tVariant* paParams, const long lS
 
 		return (bool)(res == JNI_TRUE);
 	}
-	return false;
 }
 
 jstring  BTScaner::GetBluetoothDevicesList(tVariant* pvarRetValue, tVariant* paParams, const long lSizeArray) const
@@ -143,10 +176,52 @@ jstring  BTScaner::GetBluetoothDevicesList(tVariant* pvarRetValue, tVariant* paP
 		JNIEnv* env = getJniEnv();
 		jmethodID methID = env->GetMethodID(cc, "getBluetoothDevicesList", "()Ljava/lang/String;");
 
-		jstring res = (jstring)env->CallObjectMethod(obj, methID);
+		jstring  res = (jstring)env->CallObjectMethod(obj, methID);
 		return res;
 	}
-	return (jstring)"";
+}
+
+
+WCHAR_T* BTScaner::GetDescription()
+{
+	return m_pwstrDescription;
+}
+
+uint32_t BTScaner::GetLastErrorCode()
+{
+	return 0L;
+}
+
+WCHAR_T* BTScaner::GetLastErrorDesc()
+{
+	return m_pwstrLastErrorDesc;
+}
+
+WCHAR_T* BTScaner::GetParameters()
+{
+	return m_pwstrParameters;
+}
+
+bool BTScaner::SetParameter(wchar_t* name, wchar_t* value)
+{
+	if (!name || !value)
+		return false;
+
+	if (wcscmp(name, L"MACAddress") == 0)
+	{
+		if (m_pwstrMACAddress) {
+			delete m_pwstrMACAddress;
+			m_pwstrMACAddress = 0;
+		}
+
+		convToShortWchar(&m_pwstrMACAddress, value);
+	}
+	else
+	{
+		return false;
+	}
+
+	return true;
 }
 
 void BTScaner::setCC(jclass _cc) {
