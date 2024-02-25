@@ -105,9 +105,6 @@ uint32_t getLenShortWcharStr(const WCHAR_T* Source)
     return res;
 }
 
-
-
-
 WcharWrapper::WcharWrapper(const wchar_t* str) :
 
 #if defined(__APPLE__) || defined(__ANDROID__)

@@ -23,6 +23,7 @@ public:
         eMethEnabled,
 		eMethInitDevice,
 		eMethStopDevice,
+        eMethToast,
 		eMethLast       // Always last
     };
 

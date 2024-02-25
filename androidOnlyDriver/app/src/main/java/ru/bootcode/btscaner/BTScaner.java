@@ -36,7 +36,6 @@ public class BTScaner implements Runnable {
     public BTScaner(Activity m_Activity, long m_V8Object) {
         this.m_V8Object = m_V8Object;
         this.m_Activity = m_Activity;
-
     }
 
     public void run() {

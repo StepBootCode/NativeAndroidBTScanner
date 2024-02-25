@@ -42,45 +42,55 @@ Java_ru_bootcode_btscaner_BTScaner_OnCancel(JNIEnv *env, jclass clazz,
 }
 
 
-BTScaner::BTScaner() : cc(nullptr), obj(nullptr)
+BTScaner::BTScaner() : 
+	cc(nullptr), 
+	obj(nullptr),
+	m_pwstrMACAddress(nullptr),
+	m_pwstrDescription(nullptr),
+	m_pwstrLastErrorDesc(nullptr),
+	m_pwstrParameters(nullptr),
+	m_pwstrDeviceId(nullptr),
+	m_pwstrDeviceDesc(nullptr)
 {
-}
+
+	/*
+	JNIEnv* env = getJniEnv();
+	jmethodID methID = env->GetMethodID(cc, "getParameters", "()Ljava/lang/String;");
+
+	jstring res = (jstring)env->CallObjectMethod(obj, methID);
+
+	m_pwstrParameters = 0;
+	if (res)
+	{
+	//	JNIEnv* env = getJniEnv();
+		int* lSize;
+		*lSize = env->GetStringLength(res);
+		const WCHAR_T* pjstr = env->GetStringChars(res, NULL);
+		m_iMemory->AllocMemory((void**)&m_pwstrDescription, (*lSize + 1) * sizeof(WCHAR_T));
+		for (auto i = 0; i < *lSize; ++i)
+			m_pwstrDescription[i] = pjstr[i];
+		m_pwstrDescription[*lSize] = 0;
+		env->ReleaseStringChars(res, pjstr);
+	}
+
+	wchar_t description[] =
+		L"<?xml version=\"1.0\" encoding=\"UTF-8\"?><DriverDescription Name=\"Bluetooth сканер штрихкода\" Description=\"Bluetooth сканер штрихкода\" EquipmentType=\"BTСканерШтрихкода\" IntegrationComponent=\"false\" MainDriverInstalled=\"false\" DriverVersion=\"1.0.0.0\" IntegrationComponentVersion=\"1.0\" DownloadURL=\"\" LogIsEnabled=\"false\" LogPath = \"\"/>";
+	m_pwstrDescription = 0;
+	convToShortWchar(&m_pwstrDescription, description);
+
+
+	//wchar_t parameters[] =
+	//	L"<Settings><Group Caption=\"Параметры подключения\"><Parameter Name=\"MACAddress\" Caption=\"MAC адрес\" TypeValue=\"String\" DefaultValue=\"\"><ChoiceList><Item Value=\"broadcast\">broadcast event</Item><Item Value=\"clipboard\">clipboard</Item></ChoiceList></Parameter></Group></Settings>";
+	//m_pwstrParameters = 0;
+	//convToShortWchar(&m_pwstrParameters, parameters);
+	*/
+	}
 
 BTScaner::~BTScaner()
 {
 	if (obj)
 	{
-		JNIEnv* env = getJniEnv();
-		jmethodID methID = env->GetMethodID(cc, "getParameters", "()Ljava/lang/String;");
-
-		jstring res = (jstring)env->CallObjectMethod(obj, methID);
-		
-		m_pwstrParameters = 0;
-		if (res)
-		{
-			JNIEnv* env = getJniEnv();
-			int* lSize;
-			*lSize = env->GetStringLength(res);
-			const WCHAR_T* pjstr = env->GetStringChars(res, NULL);
-			m_iMemory->AllocMemory((void**)&m_pwstrDescription, (*lSize + 1) * sizeof(WCHAR_T));
-			for (auto i = 0; i < *lSize; ++i)
-				m_pwstrDescription[i] = pjstr[i];
-			m_pwstrDescription[*lSize] = 0;
-			env->ReleaseStringChars(res, pjstr);
-		}
-
-		wchar_t description[] =
-			L"<?xml version=\"1.0\" encoding=\"UTF-8\"?><DriverDescription Name=\"Bluetooth сканер штрихкода\" Description=\"Bluetooth сканер штрихкода\" EquipmentType=\"BTСканерШтрихкода\" IntegrationComponent=\"false\" MainDriverInstalled=\"false\" DriverVersion=\"1.0.0.0\" IntegrationComponentVersion=\"1.0\" DownloadURL=\"\" LogIsEnabled=\"false\" LogPath = \"\"/>";
-		m_pwstrDescription = 0;
-		convToShortWchar(&m_pwstrDescription, description);
-
-
-		//wchar_t parameters[] =
-		//	L"<Settings><Group Caption=\"Параметры подключения\"><Parameter Name=\"MACAddress\" Caption=\"MAC адрес\" TypeValue=\"String\" DefaultValue=\"\"><ChoiceList><Item Value=\"broadcast\">broadcast event</Item><Item Value=\"clipboard\">clipboard</Item></ChoiceList></Parameter></Group></Settings>";
-		//m_pwstrParameters = 0;
-		//convToShortWchar(&m_pwstrParameters, parameters);
-
-		StopDevice(); 
+		StopDevice(); 	
 
 		JNIEnv* env = getJniEnv();
 		env->DeleteGlobalRef(obj);
@@ -135,11 +145,12 @@ void BTScaner::InitDevice(tVariant* paParams, IMemoryManager* iMemory)
 	{
 		JNIEnv* env = getJniEnv();
 
+		/*
 		jstring jMAC = m_pwstrMACAddress != NULL ?
 			env->NewString(m_pwstrMACAddress, getLenShortWcharStr(m_pwstrMACAddress)) :
 			NULL;
-
-		//jstring jMAC = env->NewString(paParams[0].pwstrVal, paParams[0].wstrLen);
+		*/
+		jstring jMAC = env->NewString(paParams[0].pwstrVal, paParams[0].wstrLen);
 
 		jmethodID methID = env->GetMethodID(cc, "initDevice", "(Ljava/lang/String;)V");
 		env->CallVoidMethod(obj, methID, jMAC);

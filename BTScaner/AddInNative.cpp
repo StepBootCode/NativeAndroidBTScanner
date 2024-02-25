@@ -25,7 +25,8 @@ static const wchar_t *g_MethodNames[] =
 	L"SetParameter",
 	L"Enabled",
 	L"InitDevice",
-	L"StopDevice"
+	L"StopDevice",
+	L"Toast"
 };
 
 static const wchar_t *g_MethodNamesRu[] =
@@ -37,7 +38,8 @@ static const wchar_t *g_MethodNamesRu[] =
 	L"УстановитьПараметр",
 	L"Доступно",
 	L"ИнициализироватьУстройство",
-	L"ОстановитьУстройство"
+	L"ОстановитьУстройство",
+	L"ВсплывающееСообщение"
 };
 
 static const wchar_t g_ComponentNameAddIn[] = L"BTScaner";
@@ -317,6 +319,7 @@ long AddInNative::GetNParams(const long lMethodNum)
 	case eMethGetDescription:
 	case eMethGetLastError:
 	case eMethGetParameters:
+	case eMethToast:
 		return 1;
 	case eMethSetParameter:
 		return 2;
@@ -365,6 +368,39 @@ bool AddInNative::CallAsProc(const long lMethodNum, tVariant* paParams, const lo
 			jvBTScaner.StopDevice();
 			return true;
 		}
+		case eMethToast: {
+
+			IAndroidComponentHelper* helper = (IAndroidComponentHelper*)m_iConnect->GetInterface(eIAndroidComponentHelper);
+			if (helper)
+			{
+				WCHAR_T* className = nullptr;
+				convToShortWchar(&className, L"ru.bootcode.btscaner.ShowToast");
+				jclass ccloc = helper->FindClass(className);
+				delete[] className;
+				className = nullptr;
+				if (ccloc)
+				{
+					JNIEnv* env = getJniEnv();
+					jclass cc = static_cast<jclass>(env->NewGlobalRef(ccloc));
+					env->DeleteLocalRef(ccloc);
+
+					jobject activity = helper->GetActivity();
+					jstring message = env->NewString(paParams[0].pwstrVal, paParams[0].wstrLen);
+
+					jmethodID methID = env->GetMethodID(cc, "<init>", "(Landroid/app/Activity;Ljava/lang/String;)V");
+					jobject objloc = env->NewObject(cc, methID, activity, message);  //cnn
+					jobject obj = static_cast<jobject>(env->NewGlobalRef(objloc));
+					
+					env->DeleteLocalRef(objloc);
+					methID = env->GetMethodID(cc, "toast", "()V");
+					env->CallVoidMethod(obj, methID);
+					env->DeleteLocalRef(activity);
+				}
+			}
+
+			return true;
+		}
+
 		default:
 			return false;
 	}
@@ -438,22 +474,43 @@ bool AddInNative::CallAsFunc(const long lMethodNum, tVariant* pvarRetValue, tVar
 			TV_I4(pvarRetValue) = jvBTScaner.GetLastErrorCode();
 			return true;
 		case eMethGetParameters:
-			if (m_iMemory)
+		{
+			IAndroidComponentHelper* helper = (IAndroidComponentHelper*)m_iConnect->GetInterface(eIAndroidComponentHelper);
+			if (helper)
 			{
-				tVariant& pParam0 = paParams[0];
-				WCHAR_T* pwstrParams = jvBTScaner.GetParameters();
-				uint32_t iActualSize = getLenShortWcharStr(pwstrParams) + 1;
-				if (m_iMemory->AllocMemory((void**)&pParam0.pwstrVal, iActualSize * sizeof(WCHAR_T)))
+				WCHAR_T* className = nullptr;
+				convToShortWchar(&className, L"ru.bootcode.btscaner.BTScaner");
+				jclass ccloc = helper->FindClass(className);
+				delete[] className;
+				className = nullptr;
+				if (ccloc)
 				{
-					memcpy(pParam0.pwstrVal, pwstrParams, iActualSize * sizeof(WCHAR_T));
-					pParam0.wstrLen = iActualSize - 1;
-					TV_VT(&pParam0) = VTYPE_PWSTR;
+					JNIEnv* env = getJniEnv();
+					jclass cc = static_cast<jclass>(env->NewGlobalRef(ccloc));
+					env->DeleteLocalRef(ccloc);
+
+					jobject activity = helper->GetActivity();
+					jmethodID methID = env->GetMethodID(cc, "<init>", "(Landroid/app/Activity;J)V");
+					jobject objloc = env->NewObject(cc, methID, activity, (jlong)this);  //cnn
+					jobject obj = static_cast<jobject>(env->NewGlobalRef(objloc));
+					env->DeleteLocalRef(objloc);
+					methID = env->GetMethodID(cc, "show", "()V");
+					env->CallVoidMethod(obj, methID);
+					
+					methID = env->GetMethodID(cc, "getParameters", "()Ljava/lang/String;");
+					jstring  res = (jstring)env->CallObjectMethod(obj, methID);
+					env->DeleteLocalRef(activity);
+
+					TV_VT(pvarRetValue) = VTYPE_PWSTR;
+					pvarRetValue->wstrLen = jstring2v8string(env, m_iMemory, res, &(pvarRetValue->pwstrVal)) / sizeof(uint16_t) - 1;
+					
+					env->DeleteLocalRef(activity);
 				}
 			}
-
 			TV_VT(pvarRetValue) = VTYPE_BOOL;
 			TV_BOOL(pvarRetValue) = true;
 			return true;
+		}
 		case eMethSetParameter:
 		{
 			wchar_t* pwstrParam0 = 0;

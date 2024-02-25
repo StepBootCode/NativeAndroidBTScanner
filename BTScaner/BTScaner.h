@@ -25,8 +25,8 @@ public:
 	BTScaner();
 	~BTScaner();
 
-	IAddInDefBaseEx *m_iConnect;
-	IMemoryManager	*m_iMemory;
+	IAddInDefBaseEx* m_iConnect;
+	IMemoryManager* m_iMemory;
 
 	void setCC(jclass _cc);
 	void setOBJ(jobject _obj);
